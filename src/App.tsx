@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import * as THREE from "three";
 import useWindowMeasurements from "./hooks/useWindowMeasurements";
-import { useFrame } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 function Box(props: any) {
   // This reference gives us direct access to the THREE.Mesh object
   const ref = useRef<any>();
@@ -28,8 +28,15 @@ function Box(props: any) {
   );
 }
 
-function App() {
-  return <div></div>;
-}
+const App = () => {
+  return (
+    <Canvas>
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <Box position={[-1.2, 0, 0]} />
+      <Box position={[1.2, 0, 0]} />
+    </Canvas>
+  );
+};
 
 export default App;
