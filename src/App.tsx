@@ -4,6 +4,7 @@ import "./App.css";
 import * as THREE from "three";
 import useWindowMeasurements from "./hooks/useWindowMeasurements";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { globalContext } from "./GlobalContext";
 function Box(props: any) {
   // This reference gives us direct access to the THREE.Mesh object
   const ref = useRef<any>();
@@ -29,13 +30,16 @@ function Box(props: any) {
 }
 
 const App = () => {
+  const [values, setValues] = useState({});
   return (
-    <Canvas>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-      <Box position={[-1.2, 0, 0]} />
-      <Box position={[1.2, 0, 0]} />
-    </Canvas>
+    <globalContext.Provider value={{ values: values, setValues: setValues }}>
+      <Canvas>
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        <Box position={[-1.2, 0, 0]} />
+        <Box position={[1.2, 0, 0]} />
+      </Canvas>{" "}
+    </globalContext.Provider>
   );
 };
 
