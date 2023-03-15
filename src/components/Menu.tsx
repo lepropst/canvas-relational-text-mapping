@@ -1,12 +1,20 @@
 import { useContext } from "react";
 import { globalContext } from "../GlobalContext";
 
-export default function Menu({ visible }: { visible: boolean }) {
-  const { values, setValues } = useContext(globalContext);
+export default function Menu({
+  visible,
+  setVisible,
+}: {
+  visible: boolean;
+  setVisible: (obj: any) => void;
+}) {
   const handleAddElemennt = () => {
     console.log("adding iteem");
   };
-  const actions = [{ label: "Add Item", action: handleAddElemennt }];
+  const actions = [
+    { label: "Add Item", action: handleAddElemennt },
+    { label: "close", action: () => setVisible(false) },
+  ];
   return (
     <div
       className={`${
@@ -15,15 +23,13 @@ export default function Menu({ visible }: { visible: boolean }) {
     >
       {actions.map((e) => (
         <button
+          key={e.label}
           onClick={e.action}
           className="rounded border py-.5 px-2 bg-slate-50"
         >
           {e.label}
         </button>
       ))}
-      {values.elements &&
-        values.elements.length &&
-        values.elements.map((e: any) => <div>{JSON.stringify(e)}</div>)}
     </div>
   );
 }

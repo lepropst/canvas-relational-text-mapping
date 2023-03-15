@@ -1,35 +1,48 @@
-import React, { useEffect, useRef, useState } from "react";
-import logo from "./logo.svg";
+import { useEffect, useRef, useState } from "react";
+
 import "./App.css";
-import * as THREE from "three";
-import useWindowMeasurements from "./hooks/useWindowMeasurements";
+
 import {
   Canvas,
-  createRoot,
+  createPortal,
   extend,
   useFrame,
   useThree,
-  Vector3,
-  _roots,
 } from "@react-three/fiber";
-import { globalContext } from "./GlobalContext";
-import StandardBox from "./elements/StandardBox";
+
+import { useFBO } from "@react-three/drei";
+import { Scene, Vector3 } from "three";
+import * as THREE from "three";
+import { easing } from "maath";
+
 import Menu from "./components/Menu";
+import InnerCanvas from "./elements/InnerCanvas";
+import Camera from "./elements/Camera";
 
 export default function App() {
-  const [values, setValues] = useState<{
-    mouseElements: Vector3[];
-    elements: Vector3[];
-  }>({
-    mouseElements: [],
-    elements: [],
-  });
-
   const [dialogShown, setDialogShown] = useState(false);
-
+  const re = useRef(null);
+  
   return (
-    <globalContext.Provider value={{ values: values, setValues: setValues }}>
-      <StandardBox position={[0, 0, 0]}></StandardBox>
-    </globalContext.Provider>
+    <>
+      <div className="h-screen w-screen">
+        <Canvas
+          // onPointerMissed={handleMenuOpen}
+          id="canvas"
+          ref={re}
+        >
+          <InnerCanvas />
+        </Canvas>
+      </div>
+      <div className="absolute bottom-4 right-4">
+        <button
+          onClick={() => setDialogShown(true)}
+          className="border bg-teal-300 py-1 p-2 m-2 rounded-full"
+        >
+          +
+        </button>
+      </div>
+      <Menu visible={dialogShown} setVisible={setDialogShown} />
+    </>
   );
 }
